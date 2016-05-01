@@ -5,8 +5,7 @@
 
   &--wrapper {
     border-top: $thredded-base-border;
-    margin-top: $thredded-base-spacing;
-    padding-top: $thredded-large-spacing;
+    padding-top: $thredded-base-spacing;
     @include thredded-media-mobile {
       padding-top: $thredded-base-spacing;
     }

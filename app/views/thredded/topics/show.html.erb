@@ -8,7 +8,9 @@
                   id: dom_id(topic),
                   class: ['thredded--main-section', 'thredded--topic', *topic_css_classes(topic)] do %>
     <%= render 'thredded/topics/header', topic: topic %>
+    <%= render 'thredded/topics/actions', topic: topic %>
     <%= render partial: 'thredded/posts/post', collection: @posts, cached: true %>
+
     <% if policy(@new_post).create? %>
       <div class="thredded--post-form--wrapper">
         <h3 class="thredded--post-form--title">Add a post</h3>
@@ -16,14 +18,6 @@
                    topic:       topic,
                    post:        @new_post,
                    button_text: t('thredded.posts.form.create_btn') %>
-      </div>
-    <% end %>
-
-    <% if topic.can_destroy? %>
-      <div class="thredded--topic-delete--wrapper">
-        <%= form_tag topic.destroy_path, method: :delete, class: 'thredded--topic-delete-form' do %>
-          <%= submit_tag 'Delete Topic', class: 'thredded--form--submit' %>
-        <% end %>
       </div>
     <% end %>
   <% end %>
