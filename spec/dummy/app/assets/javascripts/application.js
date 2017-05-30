@@ -1,5 +1,5 @@
 //= require jquery3
-//= require jquery_ujs
+//= require rails-ujs
 //= require turbolinks
 //= require thredded/dependencies
 //= require locales/jquery.timeago.es
