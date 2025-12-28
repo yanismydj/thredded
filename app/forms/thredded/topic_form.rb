@@ -28,26 +28,20 @@ module Thredded
     end
 
     def save
-      # Validate topic first, but skip post validation until topic is saved
-      return false unless topic.valid?
+      return false unless valid?
 
       ActiveRecord::Base.transaction do
         new_topic = !topic.persisted?
-
         topic.save!
-
-        # Now that topic is persisted, set postable and validate post
         post.postable = topic
-        fail ActiveRecord::Rollback unless post.valid?
-
+        unless post.valid?
+          promote_errors(post.errors)
+          raise ActiveRecord::Rollback
+        end
         post.save!
-
         Thredded::UserTopicReadState.read_on_first_post!(user, post) if new_topic
       end
-      # Check if post is valid after transaction to return false if validation failed
-      return false unless post.errors.empty?
-
-      true
+      errors.empty?
     end
 
     def topic
@@ -93,12 +87,8 @@ module Thredded
       end
     end
 
-    # Override validate_children to only validate post if topic is persisted
-    # This prevents "Postable must exist" errors during initial validation
     def validate_children
       promote_errors(topic.errors) if topic.invalid?
-      # Only validate post if topic is already persisted (for updates)
-      # or if we're in the save transaction (topic will be saved first)
       return unless topic.persisted?
 
       promote_errors(post.errors) if post.invalid?
