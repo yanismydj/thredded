@@ -18,7 +18,7 @@ Thredded works with SQLite, MySQL (v5.6.4+), and PostgreSQL. See the demo at htt
 
   s.files = Dir['{app,bin,config,db,lib,vendor}/**/*'] + %w[MIT-LICENSE README.md]
 
-  s.required_ruby_version = '>= 3.1', '< 4.0'
+  s.required_ruby_version = '>= 3.1', '< 4.1'
 
   # backend
   s.add_dependency 'db_text_search'
